@@ -1,0 +1,9 @@
+schema= "KTDB1";
+start_with= 10;
+maxvalue= 30;
+nomaxvalue=false;
+minvalue= 1;
+nominvalue=true;
+cycles= false;
+depends_on_table="geolocation::continent.t_direct_city";
+reset_by="SELECT IFNULL(MAX(\"id\"), 0) + 1 FROM \"geolocation::continent.t_direct_city\"";

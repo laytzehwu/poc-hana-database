@@ -1,0 +1,62 @@
+namespace geolocation;
+
+@Schema: 'KTDB1'
+context continent {
+    /**
+     * Continent
+    */
+    @Catalog.tableType : #ROW
+    @Catalog.index: [{name: 'CONTINENTCODE', unique : true, order: #DESC, elementNames: ['code']}]
+    Entity t_continent {
+        key id : Integer64; // Record id
+        code: String(2); // Continent code
+        name: hana.VARCHAR(255);
+        enable: Boolean default false; // Enable flag.
+    }
+    
+    /**
+     * Country
+    */
+    @Catalog.tableType : #ROW
+    @Catalog.index: [{name: 'COUNTRYCODE', unique : true, order: #DESC, elementNames: ['code']}]
+    Entity t_country {
+        key id : Integer64; // Record id
+        continent: Association[1] to t_continent{id}; 
+        code: String(2); // Country code
+        name: hana.VARCHAR(255);
+        enable: Boolean default false; // Enable flag.
+    }
+    
+    /**
+     * State
+    */
+    @Catalog.tableType : #ROW
+    Entity t_state {
+        key id: Integer64; // Record id
+        country: Association[1] to t_country{id};
+        name: hana.VARCHAR(255);
+        enable: Boolean default false; // Enable flag
+    }
+    
+    /**
+     * Direct city
+    */
+    @Catalog.tableType : #ROW
+    Entity t_direct_city {
+        key id: Integer64; // Record id
+        counntrtry: Association[1] to t_country{id};
+        name: hana.VARCHAR(255);
+        enable: Boolean default false; // Enable flag
+    }
+    
+    /**
+     * City
+    */
+    @Catalog.tableType : #ROW
+    Entity t_city {
+        key id: Integer64; // Record id
+        state: Association[1] to t_state{id};
+        name: hana.VARCHAR(255);
+        enable: Boolean default false;
+    }
+}
